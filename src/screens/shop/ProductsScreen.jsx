@@ -1,11 +1,11 @@
-import { StyleSheet, Text, FlatList, Image } from "react-native";
+import { StyleSheet, Text, FlatList, Image, Pressable } from "react-native";
 import FlatCard from "../../components/FlatCard";
 import products from "../../data/products.json";
 import { useEffect, useState } from "react";
 import Search from "../../components/Search";
 import { colors } from "../../theme/colors";
 
-const ProductsScreen = ({ route }) => {
+const ProductsScreen = ({ route, navigation }) => {
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [keyword, setKeyword] = useState("");
 
@@ -26,15 +26,17 @@ const ProductsScreen = ({ route }) => {
 
   const renderProductItem = ({ item }) => {
     return (
-      <FlatCard>
-        <Text>{item.title}</Text>
-        <Image
-          source={{ uri: item.mainImage }}
-          width={100}
-          height={100}
-          resizeMode="contain"
-        />
-      </FlatCard>
+      <Pressable onPress={() => navigation.navigate("Producto")}>
+        <FlatCard>
+          <Text style={styles.productsText}>{item.title}</Text>
+          <Image
+            source={{ uri: item.mainImage }}
+            width={100}
+            height={100}
+            resizeMode="contain"
+          />
+        </FlatCard>
+      </Pressable>
     );
   };
 
@@ -64,5 +66,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     width: "90%",
     paddingLeft: 8,
+  },
+  productsText: {
+    fontFamily: "Sansation-Regular",
   },
 });

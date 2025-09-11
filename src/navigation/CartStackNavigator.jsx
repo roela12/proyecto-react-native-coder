@@ -7,12 +7,12 @@ const MyStack = createNativeStackNavigator();
 const CartStackNavigator = () => {
   return (
     <MyStack.Navigator
-      initialRouteName="Carrito"
+      initialRouteName="MiCarrito"
       screenOptions={{
         header: ({ route }) => <Header subtitle={route.name} />,
       }}
     >
-      <MyStack.Screen name="Carrito" component={CartScreen} />
+      <MyStack.Screen name="MiCarrito" component={CartScreen} />
     </MyStack.Navigator>
   );
 };

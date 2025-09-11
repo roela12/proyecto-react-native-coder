@@ -17,8 +17,8 @@ const CategoriesScreen = ({ navigation }) => {
           navigation.navigate("Productos", { category: item.title })
         }
       >
-        <FlatCard style={styles.categoriesContainer}>
-          <Text>{item.title}</Text>
+        <FlatCard>
+          <Text style={styles.categoriesText}>{item.title}</Text>
           <Image
             source={{ uri: item.image }}
             width={100}
@@ -44,7 +44,7 @@ const CategoriesScreen = ({ navigation }) => {
 export default CategoriesScreen;
 
 const styles = StyleSheet.create({
-  categoriesContainer: {
-    //justifyContent: "space-between",
+  categoriesText: {
+    fontFamily: "Sansation-Regular",
   },
 });

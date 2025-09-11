@@ -24,13 +24,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    padding: 10,
+    fontSize: 28,
     textAlign: "center",
     color: colors.secondary,
+    fontFamily: "Audiowide-Regular",
   },
   subtitle: {
     fontSize: 18,
     textAlign: "center",
     color: colors.secondary,
+    fontFamily: "Audiowide-Regular",
   },
 });
