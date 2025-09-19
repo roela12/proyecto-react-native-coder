@@ -1,32 +1,33 @@
 import { StyleSheet, Text, FlatList, Image, Pressable } from "react-native";
 import FlatCard from "../../components/FlatCard";
-import products from "../../data/products.json";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Search from "../../components/Search";
 import { colors } from "../../theme/colors";
 
-const ProductsScreen = ({ route, navigation }) => {
-  const [productsFiltered, setProductsFiltered] = useState([]);
+const ProductsScreen = ({ navigation }) => {
+  const [filteredProducts, setfilteredProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
 
-  const { category } = route.params;
+  const filteredProductsByCategory = useSelector(
+    (state) => state.shopReducer.filteredProductsByCategory
+  );
 
   useEffect(() => {
-    const productsFilteredByCategory = products.filter(
-      (product) => product.category.toLowerCase() == category.toLowerCase()
-    );
     keyword
-      ? setProductsFiltered(
-          productsFilteredByCategory.filter((product) =>
+      ? setfilteredProducts(
+          filteredProductsByCategory.filter((product) =>
             product.title.toLowerCase().includes(keyword.toLowerCase())
           )
         )
-      : setProductsFiltered(productsFilteredByCategory);
+      : setfilteredProducts(filteredProductsByCategory);
   }, [keyword]);
 
   const renderProductItem = ({ item }) => {
     return (
-      <Pressable onPress={() => navigation.navigate("Producto")}>
+      <Pressable
+        onPress={() => navigation.navigate("Producto", { productId: item.id })}
+      >
         <FlatCard>
           <Text style={styles.productsText}>{item.title}</Text>
           <Image
@@ -44,7 +45,7 @@ const ProductsScreen = ({ route, navigation }) => {
     <>
       <Search setKeyword={setKeyword} keyword={keyword} />
       <FlatList
-        data={productsFiltered}
+        data={filteredProducts}
         renderItem={renderProductItem}
         keyExtractor={(item) => item.id}
       />

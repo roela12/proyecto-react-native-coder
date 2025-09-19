@@ -6,17 +6,26 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import categories from "../../data/categories.json";
+import { useSelector, useDispatch } from "react-redux";
 import FlatCard from "../../components/FlatCard";
+import {
+  selectCategory,
+  filterProductsByCategory,
+} from "../../features/shop/shopSlice";
 
 const CategoriesScreen = ({ navigation }) => {
+  const categories = useSelector((state) => state.shopReducer.categories);
+  const dispatch = useDispatch();
+
+  const handleSelectCategory = (category) => {
+    dispatch(selectCategory(category));
+    dispatch(filterProductsByCategory());
+    navigation.navigate("Productos");
+  };
+
   const renderCategorieItem = ({ item }) => {
     return (
-      <Pressable
-        onPress={() =>
-          navigation.navigate("Productos", { category: item.title })
-        }
-      >
+      <Pressable onPress={() => handleSelectCategory(item.title)}>
         <FlatCard>
           <Text style={styles.categoriesText}>{item.title}</Text>
           <Image

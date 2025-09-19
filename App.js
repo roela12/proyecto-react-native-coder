@@ -4,6 +4,8 @@ import BottomStackNavigator from "./src/navigation/BottomTabsNavigator";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { azamonStore } from "./src/app/store";
+import { Provider } from "react-redux";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,9 +28,11 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer>
-      <BottomStackNavigator />
-      <StatusBar style="light" />
-    </NavigationContainer>
+    <Provider store={azamonStore}>
+      <NavigationContainer>
+        <BottomStackNavigator />
+        <StatusBar style="light" />
+      </NavigationContainer>
+    </Provider>
   );
 }
