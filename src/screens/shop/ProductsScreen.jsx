@@ -4,14 +4,22 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Search from "../../components/Search";
 import { colors } from "../../theme/colors";
+import { useGetProductsByCategoryQuery } from "../../services/shopApi";
 
 const ProductsScreen = ({ navigation }) => {
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
 
-  const filteredProductsByCategory = useSelector(
-    (state) => state.shopReducer.filteredProductsByCategory
-  );
+  // const filteredProductsByCategory = useSelector(
+  //   (state) => state.shopReducer.filteredProductsByCategory
+  // );
+
+  const category = useSelector((state) => state.shopReducer.selectedCategory);
+  const {
+    data: filteredProductsByCategory,
+    error,
+    isLoading,
+  } = useGetProductsByCategoryQuery(category.toLowerCase());
 
   useEffect(() => {
     keyword
@@ -21,10 +29,14 @@ const ProductsScreen = ({ navigation }) => {
           )
         )
       : setfilteredProducts(filteredProductsByCategory);
-  }, [keyword]);
+  }, [keyword, filteredProductsByCategory]);
 
   const renderProductItem = ({ item }) => {
-    return (
+    return isLoading ? (
+      <Text>Cargando...</Text>
+    ) : error ? (
+      <Text>Error: {error.message}</Text>
+    ) : (
       <Pressable
         onPress={() => navigation.navigate("Producto", { productId: item.id })}
       >

@@ -5,6 +5,7 @@ import {
   View,
   Image,
   Pressable,
+  Dimensions,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import FlatCard from "../../components/FlatCard";
@@ -12,19 +13,28 @@ import {
   selectCategory,
   filterProductsByCategory,
 } from "../../features/shop/shopSlice";
+import { useGetCategoriesQuery } from "../../services/shopApi";
+
+const usableHeight = Dimensions.get("window").height * 0.77;
 
 const CategoriesScreen = ({ navigation }) => {
-  const categories = useSelector((state) => state.shopReducer.categories);
+  const { data: categories, error, isLoading } = useGetCategoriesQuery();
+
+  //const categories = useSelector((state) => state.shopReducer.categories);
   const dispatch = useDispatch();
 
   const handleSelectCategory = (category) => {
     dispatch(selectCategory(category));
-    dispatch(filterProductsByCategory());
+    //dispatch(filterProductsByCategory());
     navigation.navigate("Productos");
   };
 
   const renderCategorieItem = ({ item }) => {
-    return (
+    return isLoading ? (
+      <Text>Cargando...</Text>
+    ) : error ? (
+      <Text>Error: {error.message}</Text>
+    ) : (
       <Pressable onPress={() => handleSelectCategory(item.title)}>
         <FlatCard>
           <Text style={styles.categoriesText}>{item.title}</Text>
@@ -40,7 +50,7 @@ const CategoriesScreen = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ height: usableHeight }}>
       <FlatList
         data={categories}
         renderItem={renderCategorieItem}

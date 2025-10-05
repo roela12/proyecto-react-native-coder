@@ -6,7 +6,9 @@ const Header = ({ subtitle }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate("Categorías")}>
+      <Pressable
+        onPress={() => navigation.navigate("Tienda", { screen: "Categorías" })}
+      >
         <Text style={styles.title}>Azamon</Text>
       </Pressable>
       <Text style={styles.subtitle}>{subtitle}</Text>

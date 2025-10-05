@@ -1,5 +1,6 @@
 import { StyleSheet, View, TextInput } from "react-native";
 import { colors } from "../theme/colors";
+import { Ionicons } from "@expo/vector-icons";
 
 const Search = ({ setKeyword, keyword }) => {
   return (
@@ -10,6 +11,7 @@ const Search = ({ setKeyword, keyword }) => {
         style={styles.textInput}
         valuye={keyword}
       />
+      <Ionicons name="search-outline" size={24} color="#999" />
     </View>
   );
 };

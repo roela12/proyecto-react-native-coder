@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
-import BottomStackNavigator from "./src/navigation/BottomTabsNavigator";
+import MainNavigator from "./src/navigation/MainNavigator";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -29,10 +28,8 @@ export default function App() {
   }
   return (
     <Provider store={azamonStore}>
-      <NavigationContainer>
-        <BottomStackNavigator />
-        <StatusBar style="light" />
-      </NavigationContainer>
+      <MainNavigator />
+      <StatusBar style="light" />
     </Provider>
   );
 }
