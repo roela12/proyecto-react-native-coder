@@ -4,6 +4,7 @@ import cartReducer from "../features/cart/cartSlice";
 import userReducer from "../features/user/userSlice";
 import { shopApi } from "../services/shopApi";
 import { authApi } from "../services/authApi";
+import { profileApi } from "../services/profileApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const azamonStore = configureStore({
@@ -13,11 +14,13 @@ export const azamonStore = configureStore({
     userReducer,
     [shopApi.reducerPath]: shopApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
       .concat(shopApi.middleware)
-      .concat(authApi.middleware);
+      .concat(authApi.middleware)
+      .concat(profileApi.middleware);
   },
 });
 

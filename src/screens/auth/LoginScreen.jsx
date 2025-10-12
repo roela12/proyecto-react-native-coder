@@ -23,7 +23,6 @@ const LoginScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const onsubmit = () => {
     triggerLogin({ email, password });
-    console.log(result);
   };
 
   useEffect(() => {
