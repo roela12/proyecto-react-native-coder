@@ -20,7 +20,12 @@ const CartScreen = () => {
   const FooterComponent = () => (
     <View style={styles.footerContainer}>
       <Text style={styles.footerTotal}>Total: $ {total} </Text>
-      <Pressable style={styles.confirmButton}>
+      <Pressable
+        style={({ pressed }) => [
+          { opacity: pressed ? 0.9 : 1 },
+          styles.confirmButton,
+        ]}
+      >
         <Text style={styles.confirmButtonText}>Confirmar</Text>
       </Pressable>
     </View>
@@ -38,8 +43,8 @@ const CartScreen = () => {
       <View style={styles.cartDescription}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.shortDescription}</Text>
-        <Text style={styles.price}>Precio unitario: $ {item.price}</Text>
-        <Text stlyle={styles.quantity}>Cantidad: {item.quantity}</Text>
+        <Text style={styles.text}>Precio unitario: $ {item.price}</Text>
+        <Text stlyle={styles.text}>Cantidad: {item.quantity}</Text>
         <Text style={styles.total}>Total: $ {item.quantity * item.price}</Text>
         <Pressable onPress={() => dispatch(removeItems(item.id))}>
           <Ionicons
@@ -66,7 +71,11 @@ const CartScreen = () => {
           ListFooterComponent={<FooterComponent />}
         />
       ) : (
-        <Text>Aún no hay productos en el carrito</Text>
+        <View style={styles.noProductsContainer}>
+          <Text style={styles.noProductsText}>
+            Aún no hay productos en el carrito
+          </Text>
+        </View>
       )}
     </>
   );
@@ -92,16 +101,17 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
   },
   description: {
     marginBottom: 16,
+    fontFamily: "Sansation-Regular",
   },
   total: {
     marginTop: 16,
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
   },
   trashIcon: {
     alignSelf: "flex-end",
@@ -114,25 +124,39 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footerTotal: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
   },
   confirmButton: {
     padding: 8,
-    paddingHorizontal: 16,
-    backgroundColor: colors.green,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: colors.primary,
     borderRadius: 16,
-    marginBottom: 24,
+    margin: 24,
   },
   confirmButtonText: {
     color: colors.white,
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
   },
   cartScreenTitle: {
-    fontSize: 16,
-    fontWeight: "700",
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
     textAlign: "center",
-    paddingVertical: 8,
+    paddingVertical: 14,
+  },
+  text: {
+    fontFamily: "Sansation-Regular",
+  },
+  noProductsText: {
+    fontSize: 18,
+    textAlign: "center",
+    fontFamily: "Sansation-Bold",
+  },
+  noProductsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

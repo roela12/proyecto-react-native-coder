@@ -56,7 +56,7 @@ const ProductScreen = ({ route }) => {
       <Text style={styles.price}>Precio: ${product.price}</Text>
       <Pressable
         style={({ pressed }) => [
-          { opacity: pressed ? 0.95 : 1 },
+          { opacity: pressed ? 0.9 : 1 },
           styles.addToCartButton,
         ]}
         onPress={() => dispatch(addItems({ product: product, quantity: 1 }))}
@@ -75,16 +75,17 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   textBrand: {
-    color: colors.grisOscuro,
+    fontFamily: "Sansation-Regular",
   },
   textTitle: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 28,
+    fontFamily: "Sansation-Bold",
   },
   longDescription: {
     fontSize: 16,
     textAlign: "justify",
     paddingVertical: 8,
+    fontFamily: "Sansation-Regular",
   },
   tagsContainer: {
     flexDirection: "row",
@@ -101,10 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
     color: colors.primary,
-  },
-  price: {
-    fontWeight: "800",
-    fontSize: 18,
+    fontFamily: "Sansation-Regular",
   },
   discount: {
     backgroundColor: colors.red,
@@ -118,26 +116,30 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: "center",
     verticalAlign: "center",
+    fontFamily: "Sansation-Regular",
   },
   noStockText: {
     color: colors.red,
+    fontFamily: "Sansation-Regular",
   },
   price: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 25,
+    fontFamily: "Sansation-Bold",
     alignSelf: "center",
     paddingVertical: 16,
   },
   addToCartButton: {
     padding: 8,
     paddingHorizontal: 16,
-    backgroundColor: colors.green,
+    backgroundColor: colors.primary,
     borderRadius: 16,
     marginVertical: 16,
   },
   textAddToCart: {
     color: colors.white,
+    padding: 10,
     fontSize: 24,
     textAlign: "center",
+    fontFamily: "Sansation-Regular",
   },
 });

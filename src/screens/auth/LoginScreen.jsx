@@ -5,7 +5,6 @@ import {
   TextInput,
   Pressable,
   Dimensions,
-  Animated,
 } from "react-native";
 import { colors } from "../../theme/colors";
 import { useEffect, useState } from "react";
@@ -50,6 +49,9 @@ const LoginScreen = ({ navigation, route }) => {
           style={styles.textInput}
           secureTextEntry
         />
+        {result.isError && (
+          <Text style={styles.errorText}>correo o contraseña incorrectos</Text>
+        )}
       </View>
       <View style={styles.footTextContainer}>
         <Text style={styles.whiteText}>¿No tienes una cuenta?</Text>
@@ -140,10 +142,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Sansation-Bold",
   },
-  error: {
-    padding: 16,
-    backgroundColor: colors.red,
-    borderRadius: 8,
-    color: colors.white,
+  errorText: {
+    color: colors.red,
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: "Sansation-Bold",
   },
 });
