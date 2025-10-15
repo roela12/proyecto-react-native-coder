@@ -15,6 +15,8 @@ import { setProfilePicture } from "../../features/user/userSlice";
 import { usePutProfilePictureMutation } from "../../services/profileApi";
 //import MapView, { Marker } from 'react-native-maps';
 //import * as Location from 'expo-location';
+import { clearUser } from "../../features/user/userSlice";
+import { clearSession } from "../../db";
 
 const ProfileScreen = () => {
   const user = useSelector((state) => state.userReducer.user);
@@ -81,6 +83,14 @@ const ProfileScreen = () => {
   //     getCurrentLocation();
   // }, []);
 
+  const handleClearSession = async () => {
+    try {
+      await clearSession();
+    } catch {
+      console.log("Hubo un error al limpiar la sesión");
+    }
+    dispatch(clearUser());
+  };
   return (
     <View style={styles.profileContainer}>
       <View style={styles.imageProfileContainer}>
@@ -106,6 +116,12 @@ const ProfileScreen = () => {
         </Pressable>
       </View>
       <Text style={styles.profileData}>Email: {user} </Text>
+      <Pressable
+        style={({ pressed }) => [styles.btn, pressed && styles.btnPressed]}
+        onPress={handleClearSession}
+      >
+        <Text style={styles.btnText}>Cerrar sesión</Text>
+      </Pressable>
       {/* <View style={styles.titleContainer}>
                 <Text>Mi ubicación:</Text>
             </View>
@@ -164,10 +180,12 @@ const styles = StyleSheet.create({
   textProfilePlaceHolder: {
     color: colors.white,
     fontSize: 48,
+    fontFamily: "Audiowide-Regular",
   },
   profileData: {
     paddingVertical: 16,
     fontSize: 16,
+    fontFamily: "Sansation-Regular",
   },
   cameraIcon: {
     position: "absolute",
@@ -195,5 +213,20 @@ const styles = StyleSheet.create({
   placeDescriptionContainer: {
     flexDirection: "row",
     gap: 16,
+  },
+  btn: {
+    padding: 2,
+    paddingHorizontal: 12,
+    backgroundColor: colors.primary,
+    borderRadius: 16,
+  },
+  btnPressed: {
+    backgroundColor: colors.lightGray,
+  },
+  btnText: {
+    color: colors.white,
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
+    padding: 12,
   },
 });

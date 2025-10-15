@@ -5,18 +5,21 @@ import {
   TextInput,
   Pressable,
   Dimensions,
+  Switch,
 } from "react-native";
 import { colors } from "../../theme/colors";
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../../services/authApi";
 import { useDispatch } from "react-redux";
 import { setUserEmail, setLocalId } from "../../features/user/userSlice";
+import { saveSession, clearSession } from "../../db";
 
 const textInputWidth = Dimensions.get("window").width * 0.7;
 
 const LoginScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [persistSession, setPersistSession] = useState(false);
 
   const [triggerLogin, result] = useLoginMutation();
   const dispatch = useDispatch();
@@ -25,10 +28,24 @@ const LoginScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (result.status === "fulfilled") {
-      dispatch(setUserEmail(result.data.email));
-      dispatch(setLocalId(result.data.localId));
-    }
+    const saveLoginSession = async () => {
+      if (result.status === "fulfilled") {
+        try {
+          const { localId, email } = result.data;
+
+          if (persistSession) {
+            await saveSession(localId, email);
+          } else {
+            await clearSession(localId);
+          }
+          dispatch(setUserEmail(email));
+          dispatch(setLocalId(localId));
+        } catch (error) {
+          console.log("Error al guardar sesion:", error);
+        }
+      }
+    };
+    saveLoginSession();
   }, [result]);
 
   return (
@@ -73,6 +90,14 @@ const LoginScreen = ({ navigation, route }) => {
       >
         <Text style={styles.btnText}>Iniciar sesión</Text>
       </Pressable>
+      <View style={styles.rememberMe}>
+        <Text style={{ color: colors.white }}>¿Mantener sesión iniciada?</Text>
+        <Switch
+          onValueChange={() => setPersistSession(!persistSession)}
+          value={persistSession}
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+        />
+      </View>
     </View>
   );
 };
@@ -147,5 +172,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     fontFamily: "Sansation-Bold",
+  },
+  rememberMe: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
 });
