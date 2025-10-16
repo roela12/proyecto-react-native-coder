@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation, route }) => {
           dispatch(setUserEmail(email));
           dispatch(setLocalId(localId));
         } catch (error) {
-          console.log("Error al guardar sesion:", error);
+          console.error("Error al guardar sesion:", error);
         }
       }
     };

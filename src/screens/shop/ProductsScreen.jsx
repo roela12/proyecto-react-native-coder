@@ -10,10 +10,6 @@ const ProductsScreen = ({ navigation }) => {
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
 
-  // const filteredProductsByCategory = useSelector(
-  //   (state) => state.shopReducer.filteredProductsByCategory
-  // );
-
   const category = useSelector((state) => state.shopReducer.selectedCategory);
   const {
     data: filteredProductsByCategory,

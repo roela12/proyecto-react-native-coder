@@ -10,11 +10,11 @@ import { colors } from "../../theme/colors";
 import CameraIcon from "../../components/CameraIcon";
 import * as ImagePicker from "expo-image-picker";
 import { useSelector, useDispatch } from "react-redux";
-//import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { setProfilePicture } from "../../features/user/userSlice";
 import { usePutProfilePictureMutation } from "../../services/profileApi";
-//import MapView, { Marker } from 'react-native-maps';
-//import * as Location from 'expo-location';
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 import { clearUser } from "../../features/user/userSlice";
 import { clearSession } from "../../db";
 
@@ -25,16 +25,14 @@ const ProfileScreen = () => {
   );
   const localId = useSelector((state) => state.userReducer.localId);
 
-  // const [location, setLocation] = useState(null)
-  // const [locationLoaded, setLocationLoaded] = useState(false)
-  // const [address, setAddress] = useState("")
+  const [location, setLocation] = useState(null);
+  const [locationLoaded, setLocationLoaded] = useState(false);
 
   const [triggerPutProfilePicture, result] = usePutProfilePictureMutation();
 
   const dispatch = useDispatch();
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
@@ -50,44 +48,33 @@ const ProfileScreen = () => {
     }
   };
 
-  //console.log(location)
+  useEffect(() => {
+    const getCurrentLocation = async () => {
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setLocationLoaded(true);
+          return;
+        }
+        let location = await Location.getCurrentPositionAsync({});
+        if (location) {
+          setLocation(location);
+        }
+      } catch (error) {
+        console.error("Error al obtener la ubicación:", error);
+      } finally {
+        setLocationLoaded(true);
+      }
+    };
 
-  // useEffect(() => {
-  //     const getCurrentLocation = async () => {
-  //         try {
-  //             //Pido permisos:
-  //             let { status } = await Location.requestForegroundPermissionsAsync();
-  //             if (status !== 'granted') {
-  //                 console.log("Error al obtener los permisos")
-  //                 setLocationLoaded(true);
-  //                 return;
-  //             }
-  //             let location = await Location.getCurrentPositionAsync({});
-  //             if (location) {
-  //                 const response = await fetch(
-  //                     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${process.env.EXPO_PUBLIC_MAPS_API_KEY}`
-  //                 );
-  //                 const data = await response.json()
-  //                 //console.log(data)
-  //                 setAddress(data.results[0].formatted_address)
-  //                 //console.log("Location:",location)
-  //                 setLocation(location);
-  //             }
-  //         } catch (error) {
-  //             console.log("Error al obtener la ubicación:", error);
-  //         } finally {
-  //             setLocationLoaded(true);
-  //         }
-  //     }
-
-  //     getCurrentLocation();
-  // }, []);
+    getCurrentLocation();
+  }, []);
 
   const handleClearSession = async () => {
     try {
       await clearSession();
     } catch {
-      console.log("Hubo un error al limpiar la sesión");
+      console.error("Hubo un error al limpiar la sesión");
     }
     dispatch(clearUser());
   };
@@ -122,41 +109,34 @@ const ProfileScreen = () => {
       >
         <Text style={styles.btnText}>Cerrar sesión</Text>
       </Pressable>
-      {/* <View style={styles.titleContainer}>
-                <Text>Mi ubicación:</Text>
-            </View>
-            <View style={styles.mapContainer}>
-                {
-                    location
-                        ?
-                        <MapView
-                            style={styles.map}
-                            initialRegion={{
-                                latitude: location.coords.latitude,
-                                longitude: location.coords.longitude,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421,
-                            }}
-                        >
-                            <Marker coordinate={{ "latitude": location.coords.latitude, "longitude": location.coords.longitude }} title={"Mundo Geek"} />
-                        </MapView>
-                        :
-                        (
-                            locationLoaded
-                                ?
-                                <Text>Hubo un problema al obtener la ubicación</Text>
-                                :
-                                <ActivityIndicator />
-                        )
-
-                }
-
-            </View>
-            <View style={styles.placeDescriptionContainer}>
-                <View style={styles.addressContainer}>
-                    <Text style={styles.address}>{address || ""}</Text>
-                </View>
-            </View> */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.mapTitle}>Mi ubicación actual:</Text>
+      </View>
+      <View style={styles.mapContainer}>
+        {location ? (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }}
+              title={"my location"}
+            />
+          </MapView>
+        ) : locationLoaded ? (
+          <Text>Hubo un problema al obtener la ubicación</Text>
+        ) : (
+          <ActivityIndicator />
+        )}
+      </View>
     </View>
   );
 };
@@ -207,12 +187,13 @@ const styles = StyleSheet.create({
   map: {
     height: 240,
   },
-  mapTitle: {
-    fontWeight: "700",
+  titleContainer: {
+    margin: 16,
   },
-  placeDescriptionContainer: {
-    flexDirection: "row",
-    gap: 16,
+  mapTitle: {
+    fontFamily: "Sansation-Bold",
+    fontSize: 18,
+    textAlign: "center",
   },
   btn: {
     padding: 2,

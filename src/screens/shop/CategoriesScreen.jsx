@@ -19,13 +19,10 @@ const usableHeight = Dimensions.get("window").height * 0.77;
 
 const CategoriesScreen = ({ navigation }) => {
   const { data: categories, error, isLoading } = useGetCategoriesQuery();
-
-  //const categories = useSelector((state) => state.shopReducer.categories);
   const dispatch = useDispatch();
 
   const handleSelectCategory = (category) => {
     dispatch(selectCategory(category));
-    //dispatch(filterProductsByCategory());
     navigation.navigate("Productos");
   };
 
