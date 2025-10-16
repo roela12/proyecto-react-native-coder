@@ -1,4 +1,4 @@
-# Mundo Geek
+# Azamon
 
 !['Logo Azamon'](assets/icon.png)
 
