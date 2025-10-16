@@ -4,7 +4,7 @@ let db;
 
 export const initDb = async () => {
   if (!db) {
-    db = await SQLite.openDatabaseAsync("mundogeek.db");
+    db = await SQLite.openDatabaseAsync("azamon.db");
   }
 };
 
