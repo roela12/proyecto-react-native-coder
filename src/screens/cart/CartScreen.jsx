@@ -5,18 +5,27 @@ import {
   View,
   Image,
   Pressable,
+  Modal,
+  Button,
 } from "react-native";
 import { colors } from "../../theme/colors";
 import FlatCard from "../../components/FlatCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSelector, useDispatch } from "react-redux";
-import { removeItems } from "../../features/cart/cartSlice";
+import { removeItems, clearCart } from "../../features/cart/cartSlice";
+import { useState } from "react";
 
 const CartScreen = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const total = useSelector((state) => state.cartReducer.total);
-
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    dispatch(clearCart());
+  };
+
   const FooterComponent = () => (
     <View style={styles.footerContainer}>
       <Text style={styles.footerTotal}>Total: $ {total} </Text>
@@ -25,9 +34,33 @@ const CartScreen = () => {
           { opacity: pressed ? 0.9 : 1 },
           styles.confirmButton,
         ]}
+        onPress={() => setModalVisible(true)}
       >
         <Text style={styles.confirmButtonText}>Confirmar</Text>
       </Pressable>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              Su compra se ha realizado con éxito
+            </Text>
+            <Pressable
+              style={({ pressed }) => [
+                { opacity: pressed ? 0.9 : 1 },
+                styles.confirmButton,
+              ]}
+              onPress={handleCloseModal}
+            >
+              <Text style={styles.confirmButtonText}>Cerrar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 
@@ -158,5 +191,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    padding: 32,
+    alignItems: "center",
+    gap: 16,
+  },
+  modalText: {
+    fontSize: 18,
+    fontFamily: "Sansation-Bold",
+    textAlign: "center",
   },
 });
