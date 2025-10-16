@@ -42,9 +42,9 @@ npm i
 
 Crea un archivo .env en la raíz del proyecto con las siguientes variables (usá tus datos de Firebase):
 
-EXPO_PUBLIC_BASE_URL_RTDB
-EXPO_PUBLIC_BASE_URL_AUTH
-EXPO_PUBLIC_FIREBASE_API_KEY
+- EXPO_PUBLIC_BASE_URL_RTDB
+- EXPO_PUBLIC_BASE_URL_AUTH
+- EXPO_PUBLIC_FIREBASE_API_KEY
 
 4. Iniciá la aplicación en modo desarrollo:
 
