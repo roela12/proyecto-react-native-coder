@@ -132,7 +132,9 @@ const ProfileScreen = () => {
             />
           </MapView>
         ) : locationLoaded ? (
-          <Text>Hubo un problema al obtener la ubicación</Text>
+          <Text style={styles.profileData}>
+            Hubo un problema al obtener la ubicación
+          </Text>
         ) : (
           <ActivityIndicator />
         )}

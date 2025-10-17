@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "proyecto-react-native-coder",
+    "name": "Azamon",
     "slug": "proyecto-react-native-coder",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,9 +26,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
         "projectId": "a79b83ba-3801-4152-a3bd-819647cdf691"

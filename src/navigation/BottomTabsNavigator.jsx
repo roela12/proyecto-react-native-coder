@@ -4,10 +4,15 @@ import ShopStackNavigator from "./ShopStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { colors } from "../theme/colors";
+import { View, Text } from "react-native";
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
+  const cartItems = useSelector((state) => state.cartReducer.cartItems);
+  const cartQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <Tab.Navigator
       initialRouteName="Tienda"
@@ -34,11 +39,30 @@ function BottomTabNavigator() {
         component={CartStackNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="cart-outline"
-              size={24}
-              color={focused ? colors.darkGray : colors.mediumGray}
-            />
+            <View style={{ position: 'relative', width: 24, height: 24, alignItems: 'center', justifyContent: 'center' }}>
+              <Ionicons
+                name="cart-outline"
+                size={24}
+                color={focused ? colors.darkGray : colors.mediumGray}
+              />
+              {cartQuantity > 0 && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -5,
+                    right: -10,
+                    backgroundColor: 'red',
+                    borderRadius: 10,
+                    width: 20,
+                    height: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>{cartQuantity}</Text>
+                </View>
+              )}
+            </View>
           ),
         }}
       />
